@@ -46,15 +46,15 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", (e) => {
     e.preventDefault();
-    let newPostDiv = document.createElement("div"); // Corrected line
-    let usernameDiv = document.createElement("h3"); // Corrected line
-    let postDiv = document.createElement("p"); // Corrected line
-    usernameDiv.innerHTML = formOne.querySelector(".username").value; // Corrected line
-    postDiv.innerHTML = formOne.querySelector(".post").value; // Corrected line
-    newPostDiv.appendChild(usernameDiv); // Corrected line
-    newPostDiv.appendChild(postDiv); // Corrected line
-    commentsDiv.appendChild(newPostDiv); // Corrected line
-    formOne.reset(); // Clears the form after submitting
+    let newPostDiv = document.createElement("div"); 
+    let usernameDiv = document.createElement("h3"); 
+    let postDiv = document.createElement("p"); 
+    usernameDiv.innerHTML = formOne.querySelector(".username").value; 
+    postDiv.innerHTML = formOne.querySelector(".post").value; 
+    newPostDiv.appendChild(usernameDiv);
+    newPostDiv.appendChild(postDiv); 
+    commentsDiv.appendChild(newPostDiv); 
+    formOne.reset(); 
   });
 };
 
