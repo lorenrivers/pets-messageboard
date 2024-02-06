@@ -46,6 +46,75 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", (e) => {
     e.preventDefault();
+
+    let newPostDiv = document.createElement("div");
+    let usernameDiv = document.createElement("h3");
+    let postDiv = document.createElement("p");
+    usernameDiv.innerHTML = formOne.querySelector(".username").value;
+    postDiv.innerHTML = formOne.querySelector(".post").value;
+    newPostDiv.appendChild(usernameDiv);
+    newPostDiv.appendChild(postDiv);
+    commentsDiv.appendChild(newPostDiv);
+    formOne.reset();
+    submitMessageDiv.removeChild(formOne);
+
+    // create comment section
+    let commentSection = document.createElement("section");
+    commentSection.setAttribute("class", "comment-section");
+    commentsDiv.appendChild(commentSection);
+
+    // create comment section header
+    let commentSectionHeader = document.createElement("h2");
+    commentSectionHeader.textContent = "Comments";
+    commentSection.appendChild(commentSectionHeader);
+
+    // create comment section list
+    let commentSectionList = document.createElement("ul");
+    commentSectionList.setAttribute("class", "comment-section-list");
+    commentSection.appendChild(commentSectionList);
+
+    // create comment section form
+    let commentSectionForm = document.createElement("form");
+    commentSectionForm.setAttribute("class", "comment-section-form");
+    commentSection.appendChild(commentSectionForm);
+
+    // create comment section textarea
+    let commentSectionTextarea = document.createElement("textarea");
+    commentSectionTextarea.setAttribute("class", "textarea");
+    commentSectionForm.appendChild(commentSectionTextarea);
+
+    let commentSectionUsername = document.createElement("textarea");
+    commentSectionUsername.setAttribute("class", "username");
+    commentSectionUsername.setAttribute("placeholder", "username");
+    commentSectionForm.appendChild(commentSectionUsername);
+
+    // create comments section submit button
+    let commentSectionSubmitButton = document.createElement("button");
+    commentSectionSubmitButton.setAttribute(
+      "class",
+      "comment-section-submit-button"
+    );
+    commentSectionSubmitButton.textContent = "Submit";
+    commentSectionForm.appendChild(commentSectionSubmitButton);
+
+    commentSectionSubmitButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      let newCommentDiv = commentsDiv.createElement("div");
+      let commentUsername = commentsDiv.createElement("h3");
+      let commentText = commentsDiv.createElement("p");
+      commentUsername.innerHTML =
+        commentSectionForm.querySelector(".username").value;
+      commentText.innerHTML =
+        commentSectionForm.querySelector(".textarea").value;
+      newCommentDiv.appendChild(commentUsername);
+      newCommentDiv.appendChild(commentText);
+      commentSectionForm.reset();
+    });
+  });
+};
+
+createButton.addEventListener("click", createPostForm);
+
     let newPostDiv = document.createElement("div"); 
     let usernameDiv = document.createElement("h3"); 
     let postDiv = document.createElement("p"); 
@@ -59,3 +128,4 @@ const createPostForm = () => {
 };
 
 createButton.addEventListener("click", createPostForm);
+
