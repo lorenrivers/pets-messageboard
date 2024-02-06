@@ -27,6 +27,7 @@ const createPostForm = () => {
   let username = document.createElement("textarea");
   username.setAttribute("class", "username");
   username.setAttribute("placeholder", "Enter username");
+
   formOne.appendChild(username);
 
   // create textarea
@@ -44,6 +45,50 @@ const createPostForm = () => {
   submitButton.textContent = "Submit";
   formOne.appendChild(submitButton);
 
+//have a variable to store the total votes which is displayed to the user (DOM)
+// FUNCTION
+//total increments by one when the upvote button is clicked
+//total is updated in the database and is saved under the post ID that was clicked
+//updated total variable is presented to the user on the webpage
+
+let voteCounter = 0;
+
+const pVoteCounter = document.getElementById("voteCounter");
+const upvoteButton = document.getElementById("upvote");
+const downvoteButton = document.getElementById("downvote");
+
+function displayVoteCount() {
+  document.getElementById("voteCounter").textContent = voteCounter;
+}
+
+displayVoteCount();
+
+upvoteButton.addEventListener("click", function () {
+  voteCounter++;
+  displayVoteCount();
+  // const response = fetch("http://localhost:7700/votes", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({ totalVoteCount: voteCounter++ }),
+  // });
+  // if (response.ok) {
+  //   const updateVote = response.json();
+  //   console.log("Vote added!");
+  // } else {
+  //   console.log("Failed to add vote :( ");
+  // }
+});
+
+downvoteButton.addEventListener("click", function () {
+  voteCounter--;
+  displayVoteCount();
+  // need a function to save number of upvotes to database
+  // be a good idea to only let each user vote once?
+});
+
+  
   formOne.addEventListener("submit", async (e) => {
     e.preventDefault();
     let newPostDiv = document.createElement("div");

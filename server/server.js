@@ -35,6 +35,21 @@ app.get("/messages", (req, res) => {
   }
 });
 
+//POST request for sending number of votes to the server
+app.post("/votes", (req, res) => {
+  try {
+    const voteCount = req.body.totalVoteCount;
+    console.log(voteCount);
+
+    const updateVoteTotal = db
+      .prepare(`INSERT INTO posts (voteCount) VALUES (voteCount)`)
+      .run(voteCount);
+    res.json(updateVoteTotal);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 app.listen("7700", () => {
   console.log("Ah yes, the server is listening");
 });
