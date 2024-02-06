@@ -99,3 +99,20 @@ header h2 {
 .comment-section-form {
   margin-top: 20px;
 }
+
+.post-container {
+  border: 1px solid #802e64; 
+  margin-bottom: 20px; 
+}
+
+.post-content {
+  padding: 10px;
+}
+
+.post-content h3 {
+  color: #802e64; 
+}
+
+.post-content p {
+  color: #333; 
+}
