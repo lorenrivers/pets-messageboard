@@ -1,57 +1,4 @@
-isa Sloot
-isasloot
-Online
 
-Tom — 02/02/2024 13:43
-Hey Isa, I think you've been added to a group with me and Loren, could you send me your email address please so I can add you to my Trello board:)
-isa Sloot — 02/02/2024 13:49
-isasloot@hotmail.com
-Tom — 02/02/2024 14:16
-https://discord.gg/zrabbZBc
-isa Sloot — Today at 10:55
-const app = document.getElementById("app");
-const createButton = document.querySelector(".create");
-
-const createPostForm = () => {
-  // create container div
-  let containerDiv = document.createElement("div");
-Expand
-message.txt
-3 KB
-Tom — Today at 11:19
-const app = document.getElementById("app");
-const createButton = document.querySelector(".create");
-
-const createPostForm = () => {
-  // create container div
-  let containerDiv = document.createElement("div");
-Expand
-message.txt
-5 KB
-const app = document.getElementById("app");
-const createButton = document.querySelector(".create");
-
-const createPostForm = () => {
-  // create container div
-  let containerDiv = document.createElement("div");
-Expand
-message.txt
-5 KB
-js
- 
-Tom — Today at 11:54
-const app = document.getElementById("app");
-const createButton = document.querySelector(".create");
-
-const createPostForm = () => {
-  // create container div
-  let containerDiv = document.createElement("div");
-Expand
-message.txt
-5 KB
-﻿
-Tom
-tom_g01
 const app = document.getElementById("app");
 const createButton = document.querySelector(".create");
 
@@ -80,7 +27,6 @@ const createPostForm = () => {
   let username = document.createElement("textarea");
   username.setAttribute("class", "username");
   username.setAttribute("placeholder", "Enter username");
-
   formOne.appendChild(username);
 
   // create textarea
@@ -98,38 +44,39 @@ const createPostForm = () => {
   submitButton.textContent = "Submit";
   formOne.appendChild(submitButton);
 
-  submitButton.addEventListener("click", (e) => {
+  formOne.addEventListener("submit", async (e) => {
     e.preventDefault();
     let newPostDiv = document.createElement("div");
     let usernameH3 = document.createElement("h3");
     let postP = document.createElement("p");
-    usernameH3.innerHTML = formOne.querySelector(".username").value;
-    postP.innerHTML = formOne.querySelector(".post").value;
+    usernameH3.innerHTML = username.value;
+    postP.innerHTML = textarea.value;
     try {
-        const response = await fetch('http://localhost:7700/messages'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            usernameH3,
-            postP
-          })
-          if (response.ok){
-            const newPost = await response.json()
-            console.log('New post added!')
-          } else {
-            console.log('Failed to add post :( ')
-          }
-        } catch (error) {
-          console.error('Error:', error)
-        }
-    })
-    newPostDiv.appendChild(usernameDiv);
-    newPostDiv.appendChild(postDiv);
+      const response = await fetch('http://localhost:7700/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: usernameH3.innerHTML,
+          post: postP.innerHTML
+        })
+      });
+      if (response.ok) {
+        const newPost = await response.json();
+        console.log('New post added!');
+      } else {
+        console.log('Failed to add post :( ');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    newPostDiv.appendChild(usernameH3);
+    newPostDiv.appendChild(postP);
     commentsDiv.appendChild(newPostDiv);
     formOne.reset();
     submitMessageDiv.removeChild(formOne);
+  
 
     // create comment section
     let commentSection = document.createElement("section");
