@@ -2,7 +2,6 @@ const app = document.getElementById("app");
 const createButton = document.querySelector(".create");
 let submitButton;
 
-
 // we may have to back down here and do this in html :'(
 const createPostForm = () => {
   // Create container div
@@ -31,11 +30,9 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    await submitPost(formOne, commentsDiv); 
-    await fetchAndDisplayPosts(); 
+    await submitPost(formOne, commentsDiv);
+    await fetchAndDisplayExistingPosts();
   });
-  
-
 };
 
 const createPostFormElements = (parent) => {
@@ -43,7 +40,7 @@ const createPostFormElements = (parent) => {
   form.setAttribute("class", "form");
   parent.appendChild(form);
 
-  // Create username field 
+  // Create username field
   let usernamePost = document.createElement("textarea");
   usernamePost.setAttribute("class", "username-post");
   usernamePost.setAttribute("placeholder", "Enter username");
@@ -52,7 +49,10 @@ const createPostFormElements = (parent) => {
   // Create textarea
   let textarea = document.createElement("textarea");
   textarea.setAttribute("class", "post");
-  textarea.setAttribute("placeholder", "Got something to bark about? Share your woofs here!");
+  textarea.setAttribute(
+    "placeholder",
+    "Got something to bark about? Share your woofs here!"
+  );
   form.appendChild(textarea);
 
   // Create submit button
@@ -60,8 +60,6 @@ const createPostFormElements = (parent) => {
   submitButton.setAttribute("class", "submit-button");
   submitButton.textContent = "Submit";
   form.appendChild(submitButton);
-
- 
 
   return form;
 };
@@ -85,14 +83,12 @@ const submitPost = async (form, commentsDiv) => {
     if (response.ok) {
       const postData = await response.json();
       displayPost(postData);
-      form.reset();    }
-
-    
+      form.reset();
+    }
   } catch (error) {
     console.error("Error submitting post:", error.message);
   }
 };
-
 
 const submitComment = async (form, commentSectionList) => {
   let newCommentDiv = document.createElement("div");
@@ -120,7 +116,6 @@ const fetchAndDisplayExistingPosts = async () => {
   }
 };
 
-
 const displayPost = (post) => {
   let postDiv = document.createElement("div");
   postDiv.setAttribute("class", "post");
@@ -136,7 +131,6 @@ const displayPost = (post) => {
   app.querySelector(".comments").appendChild(postDiv);
   createCommentSection(postDiv);
 };
-
 
 const createCommentSection = (lastPostContainer) => {
   let commentSection = document.createElement("section");
@@ -154,7 +148,10 @@ const createCommentSection = (lastPostContainer) => {
   commentSectionUsername.setAttribute("class", "username-comment");
   commentSectionUsername.setAttribute("placeholder", "Your username");
   let commentSectionSubmitButton = document.createElement("button");
-  commentSectionSubmitButton.setAttribute("class", "comment-section-submit-button");
+  commentSectionSubmitButton.setAttribute(
+    "class",
+    "comment-section-submit-button"
+  );
   commentSectionSubmitButton.textContent = "Submit";
 
   commentSectionForm.appendChild(commentSectionTextarea);
@@ -170,9 +167,7 @@ const createCommentSection = (lastPostContainer) => {
     e.preventDefault();
     await submitComment(commentSectionForm, commentSectionList);
   });
-}
-
-
+};
 
 createButton.addEventListener("click", createPostForm);
 
@@ -197,24 +192,18 @@ displayVoteCount();
 upvoteButton.addEventListener("click", function () {
   voteCounter++;
   displayVoteCount();
-  // const response = fetch("http://localhost:7700/votes", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ totalVoteCount: voteCounter++ }),
-  // });
-  // if (response.ok) {
-  //   const updateVote = response.json();
-  //   console.log("Vote added!");
-  // } else {
-  //   console.log("Failed to add vote :( ");
-  // }
+  const response = fetch("http://localhost:7700/votes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ totalVoteCount: voteCounter }),
+  });
 });
 
 downvoteButton.addEventListener("click", function () {
   voteCounter--;
   displayVoteCount();
-  // need a function to save number of upvotes to database
+  // need a function to save number of downvotes to database
   // be a good idea to only let each user vote once?
 });

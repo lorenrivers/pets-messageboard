@@ -42,7 +42,7 @@ app.post("/votes", (req, res) => {
     console.log(voteCount);
 
     const updateVoteTotal = db
-      .prepare(`INSERT INTO posts (voteCount) VALUES (voteCount)`)
+      .prepare(`INSERT INTO posts (voteCount) VALUES (?)`)
       .run(voteCount);
     res.json(updateVoteTotal);
   } catch (err) {
