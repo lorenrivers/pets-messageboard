@@ -50,6 +50,21 @@ app.post("/votes", (req, res) => {
   }
 });
 
+
+app.delete('/messages/:postId', (req, res) => {
+  try {
+
+      const id = req.params.postId;
+
+      const result = db.prepare(`DELETE FROM posts WHERE postId = '${id}'`).run();
+      res.status(200).json({ message: 'message deleted successfully' });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 app.listen("7700", () => {
   console.log("Ah yes, the server is listening");
 });
