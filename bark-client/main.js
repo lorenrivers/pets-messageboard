@@ -3,7 +3,6 @@ const createButton = document.querySelector(".create");
 let results = document.getElementById("results");
 let submitButton;
 
-
 // we may have to back down here and do this in html :'(
 const createPostForm = () => {
   // Create container div
@@ -32,12 +31,10 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    displayMessages()
+    displayMessages();
     fetchMessages();
     submitPost(formOne);
   });
-  
-
 };
 
 const submitPost = async (form, commentsDiv) => {
@@ -58,82 +55,119 @@ const submitPost = async (form, commentsDiv) => {
 
     if (response.ok) {
       const postData = await response.json();
-      fetchMessages()
+      fetchMessages();
       displayPost(postData);
-      form.reset();    }
-
-    
+      form.reset();
+    }
   } catch (error) {
     console.error("Error submitting post:", error.message);
   }
 };
 
 const fetchMessages = async () => {
-  const messages = await fetch('http://localhost:7700/messages');
+  const messages = await fetch("http://localhost:7700/messages");
   let result = await messages.json();
-return result
-}
-
-
+  return result;
+};
 
 const displayMessages = async () => {
   try {
-    let messages = await fetchMessages(); 
+    let messages = await fetchMessages();
     results.replaceChildren();
 
-    messages.forEach(message => {
-      let messageDiv = document.createElement('div')
-      messageDiv.setAttribute('id', message.id);
-        let h3Tag = document.createElement("h3");
-        let pTag = document.createElement("p");
-        let img = document.createElement("img");
-        let delBut = document.createElement('button')
+    messages.forEach((message) => {
+      let messageDiv = document.createElement("div");
+      messageDiv.setAttribute("id", message.id);
+      let h3Tag = document.createElement("h3");
+      let pTag = document.createElement("p");
+      let img = document.createElement("img");
+      let delBut = document.createElement("button");
+      //loren addition
+      let upvoteButton = document.createElement("button");
+      let downvoteButton = document.createElement("button");
+      let pVoteCounter = document.createElement("p");
 
-      
+      h3Tag.textContent = message.message;
+      pTag.textContent = message.username;
+      img.src = message.imgURL;
+      delBut.textContent = "Delete";
+      //loren addition
+      upvoteButton.textContent = "Upvote";
+      downvoteButton.textContent = "Downvote";
+      pVoteCounter.textContent = message.voteCount;
 
-        h3Tag.textContent = message.message;
-        pTag.textContent = message.username;
-        img.src = message.imgURL;
-        delBut.textContent = 'Delete';
+      messageDiv.appendChild(h3Tag);
+      messageDiv.appendChild(pTag);
+      messageDiv.appendChild(img);
+      messageDiv.appendChild(delBut);
+      //loren addition
+      messageDiv.appendChild(upvoteButton);
+      messageDiv.appendChild(downvoteButton);
+      messageDiv.appendChild(pVoteCounter);
 
+      results.appendChild(messageDiv);
 
-        messageDiv.appendChild(h3Tag);
-        messageDiv.appendChild(pTag);
-        messageDiv.appendChild(img);
-        messageDiv.appendChild(delBut)
-
-
-        results.appendChild(messageDiv)
-
-        delBut.addEventListener('click', async (e) => {
-          e.preventDefault();
-
-          try {
-            const response = await fetch(`http://localhost:7700/messages/${message.postId}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-
-            if (response.ok) {
-              console.log('Message deleted:', message.postId);
-              displayMessages();
-            } else {
-              console.error('Failed to delete message:', response.statusText);
-            }
-          } catch (error) {
-            console.error('Error:', error);
+      //loren addition
+      upvoteButton.addEventListener("click", async function () {
+        voteCounter++;
+        pVoteCounter.textContent = voteCounter;
+        const response = await fetch(
+          `http://localhost:7700/votes/${message.postId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ totalVoteCount: voteCounter }),
           }
-        }
+        );
+      });
 
-        )
+      //loren addition
+      downvoteButton.addEventListener("click", async function () {
+        voteCounter--;
+        pVoteCounter.textContent = voteCounter;
+        const response = await fetch(
+          `http://localhost:7700/votes/${message.postId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ totalVoteCount: voteCounter }),
+          }
+        );
+      });
+
+      delBut.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        try {
+          const response = await fetch(
+            `http://localhost:7700/messages/${message.postId}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.ok) {
+            console.log("Message deleted:", message.postId);
+            displayMessages();
+          } else {
+            console.error("Failed to delete message:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
     });
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error("Error fetching messages:", error);
   }
 };
-
 
 console.log(displayMessages());
 console.log(fetchMessages());
@@ -144,7 +178,7 @@ const createPostFormElements = (parent) => {
   form.setAttribute("class", "form");
   parent.appendChild(form);
 
-  // Create username field 
+  // Create username field
   let usernamePost = document.createElement("textarea");
   usernamePost.setAttribute("class", "username-post");
   usernamePost.setAttribute("placeholder", "Enter username");
@@ -153,7 +187,10 @@ const createPostFormElements = (parent) => {
   // Create textarea
   let textarea = document.createElement("textarea");
   textarea.setAttribute("class", "post");
-  textarea.setAttribute("placeholder", "Got something to bark about? Share your woofs here!");
+  textarea.setAttribute(
+    "placeholder",
+    "Got something to bark about? Share your woofs here!"
+  );
   form.appendChild(textarea);
 
   // Create submit button
@@ -162,12 +199,8 @@ const createPostFormElements = (parent) => {
   submitButton.textContent = "Submit";
   form.appendChild(submitButton);
 
- 
-
   return form;
 };
-
-
 
 const submitComment = async (form, commentSectionList) => {
   let newCommentDiv = document.createElement("div");
@@ -180,9 +213,6 @@ const submitComment = async (form, commentSectionList) => {
   commentSectionList.appendChild(newCommentDiv);
   form.reset();
 };
-
-
-
 
 const createCommentSection = (lastPostContainer) => {
   let commentSection = document.createElement("section");
@@ -200,7 +230,10 @@ const createCommentSection = (lastPostContainer) => {
   commentSectionUsername.setAttribute("class", "username-comment");
   commentSectionUsername.setAttribute("placeholder", "Your username");
   let commentSectionSubmitButton = document.createElement("button");
-  commentSectionSubmitButton.setAttribute("class", "comment-section-submit-button");
+  commentSectionSubmitButton.setAttribute(
+    "class",
+    "comment-section-submit-button"
+  );
   commentSectionSubmitButton.textContent = "Submit";
 
   commentSectionForm.appendChild(commentSectionTextarea);
@@ -216,9 +249,7 @@ const createCommentSection = (lastPostContainer) => {
     e.preventDefault();
     await submitComment(commentSectionForm, commentSectionList);
   });
-}
-
-
+};
 
 createButton.addEventListener("click", createPostForm);
 
@@ -230,38 +261,15 @@ createButton.addEventListener("click", createPostForm);
 
 let voteCounter = 0;
 
-const pVoteCounter = document.getElementById("voteCounter");
-const upvoteButton = document.getElementById("upvote");
-const downvoteButton = document.getElementById("downvote");
-
-function displayVoteCount() {
-  document.getElementById("voteCounter").textContent = voteCounter;
-}
-
-displayVoteCount();
-
-upvoteButton.addEventListener("click", function () {
-  voteCounter++;
-  displayVoteCount();
-  // const response = fetch("http://localhost:7700/votes", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ totalVoteCount: voteCounter++ }),
-  // });
-  // if (response.ok) {
-  //   const updateVote = response.json();
-  //   console.log("Vote added!");
-  // } else {
-  //   console.log("Failed to add vote :( ");
-  // }
-});
-
-downvoteButton.addEventListener("click", function () {
-  voteCounter--;
-  displayVoteCount();
-  // need a function to save number of upvotes to database
-  // be a good idea to only let each user vote once?
-});
-
+// downvoteButton.addEventListener("click", function () {
+//   voteCounter--;
+//   displayVoteCount();
+//   const response = fetch("http://localhost:7700/votes", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ totalVoteCount: voteCounter }),
+//   });
+//   // be a good idea to only let each user vote once? remove the event listener maybe
+// });

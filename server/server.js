@@ -17,9 +17,9 @@ app.post("/messages", (req, res) => {
 
     const newMessage = db
       .prepare(
-        `INSERT INTO posts (username, message, imageURL) VALUES (?, ?, ?)`
+        `INSERT INTO posts (username, message, voteCount, imageURL) VALUES (?, ?, ?, ?)`
       )
-      .run(username, message, imageURL);
+      .run(username, message, 0, imageURL);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -36,34 +36,46 @@ app.get("/messages", (req, res) => {
 });
 
 //POST request for sending number of votes to the server
-app.post("/votes", (req, res) => {
-  try {
-    const voteCount = req.body.totalVoteCount;
-    console.log(voteCount);
+// app.post("/votes", (req, res) => {
+//   try {
+//     const voteCount = req.body.totalVoteCount;
+//     console.log(voteCount);
 
-    const updateVoteTotal = db
-      .prepare(`INSERT INTO posts (voteCount) VALUES (voteCount)`)
-      .run(voteCount);
-    res.json(updateVoteTotal);
+//     const updateVoteTotal = db
+//       .prepare(`INSERT INTO posts (voteCount) VALUES (?)`)
+//       .run(voteCount);
+//     res.json(updateVoteTotal);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+//PUT request to update the number of votes within the database
+app.put("/votes/:postId", (req, res) => {
+  try {
+    const id = req.params.postId;
+    const voteCount = req.body.totalVoteCount;
+
+    const updatedVote = db
+      .prepare(`UPDATE posts SET voteCount = ? WHERE postId = ?`)
+      .run(voteCount, id);
+    res.status(200);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-
-app.delete('/messages/:postId', (req, res) => {
+app.delete("/messages/:postId", (req, res) => {
   try {
+    const id = req.params.postId;
 
-      const id = req.params.postId;
-
-      const result = db.prepare(`DELETE FROM posts WHERE postId = '${id}'`).run();
-      res.status(200).json({ message: 'message deleted successfully' });
+    const result = db.prepare(`DELETE FROM posts WHERE postId = '${id}'`).run();
+    res.status(200).json({ message: "message deleted successfully" });
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 app.listen("7700", () => {
   console.log("Ah yes, the server is listening");

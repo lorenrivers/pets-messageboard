@@ -21,9 +21,9 @@ db.exec(`CREATE TABLE IF NOT EXISTS comments (
 )`);
 
 //Test data for tables
-db.exec(`INSERT INTO posts (username, message, imageURL)
+db.exec(`INSERT INTO posts (username, message, voteCount, imageURL)
 VALUES
-('HoochTheDog', 'Anyone got any tennis balls? 🎾', 'https://images.unsplash.com/photo-1614986387975-467d3735addb?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`);
+('HoochTheDog', 'Anyone got any tennis balls? 🎾', 0, 'https://images.unsplash.com/photo-1614986387975-467d3735addb?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`);
 
 db.exec(`INSERT INTO comments (usernameComment, comment)
 VALUES
