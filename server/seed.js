@@ -5,8 +5,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
     postId INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT,
     message TEXT,
-    upvoteCount INTEGER,
-    downvoteCount INTEGER,
+    voteCount INTEGER,
     imageURL TEXT
 )`);
 
@@ -17,8 +16,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS comments (
     postIdRespondedTo INTEGER, 
     usernameComment TEXT,
     comment TEXT,
-    commentUpvoteCount INTEGER,
-    commentDownvoteCount INTEGER,
+    commentVoteCount INTEGER,
     commentImageURL TEXT
 )`);
 
@@ -32,6 +30,6 @@ VALUES
 ('Blu', 'Nope I ate them all!!')`);
 
 //SQL query to join two tables together?
-db.exec(`SELECT posts.postId, posts.username, posts.message, posts.upvoteCount, posts.downvoteCount, posts.imageURL, comments.postIdRespondedTo, comments.usernameComment, comments.comment, comments.commentUpvoteCount, comments.commentDownvoteCount, comments.commentImageURL
+db.exec(`SELECT posts.postId, posts.username, posts.message, posts.voteCount, posts.imageURL, comments.postIdRespondedTo, comments.usernameComment, comments.comment, comments.commentVoteCount, comments.commentImageURL
 FROM posts
 INNER JOIN comments ON posts.postId = comments.postIdRespondedTo`);
