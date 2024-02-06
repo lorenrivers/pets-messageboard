@@ -1,3 +1,57 @@
+isa Sloot
+isasloot
+Online
+
+Tom — 02/02/2024 13:43
+Hey Isa, I think you've been added to a group with me and Loren, could you send me your email address please so I can add you to my Trello board:)
+isa Sloot — 02/02/2024 13:49
+isasloot@hotmail.com
+Tom — 02/02/2024 14:16
+https://discord.gg/zrabbZBc
+isa Sloot — Today at 10:55
+const app = document.getElementById("app");
+const createButton = document.querySelector(".create");
+
+const createPostForm = () => {
+  // create container div
+  let containerDiv = document.createElement("div");
+Expand
+message.txt
+3 KB
+Tom — Today at 11:19
+const app = document.getElementById("app");
+const createButton = document.querySelector(".create");
+
+const createPostForm = () => {
+  // create container div
+  let containerDiv = document.createElement("div");
+Expand
+message.txt
+5 KB
+const app = document.getElementById("app");
+const createButton = document.querySelector(".create");
+
+const createPostForm = () => {
+  // create container div
+  let containerDiv = document.createElement("div");
+Expand
+message.txt
+5 KB
+js
+ 
+Tom — Today at 11:54
+const app = document.getElementById("app");
+const createButton = document.querySelector(".create");
+
+const createPostForm = () => {
+  // create container div
+  let containerDiv = document.createElement("div");
+Expand
+message.txt
+5 KB
+﻿
+Tom
+tom_g01
 const app = document.getElementById("app");
 const createButton = document.querySelector(".create");
 
@@ -46,12 +100,31 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", (e) => {
     e.preventDefault();
-
     let newPostDiv = document.createElement("div");
-    let usernameDiv = document.createElement("h3");
-    let postDiv = document.createElement("p");
-    usernameDiv.innerHTML = formOne.querySelector(".username").value;
-    postDiv.innerHTML = formOne.querySelector(".post").value;
+    let usernameH3 = document.createElement("h3");
+    let postP = document.createElement("p");
+    usernameH3.innerHTML = formOne.querySelector(".username").value;
+    postP.innerHTML = formOne.querySelector(".post").value;
+    try {
+        const response = await fetch('http://localhost:7700/messages'), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            usernameH3,
+            postP
+          })
+          if (response.ok){
+            const newPost = await response.json()
+            console.log('New post added!')
+          } else {
+            console.log('Failed to add post :( ')
+          }
+        } catch (error) {
+          console.error('Error:', error)
+        }
+    })
     newPostDiv.appendChild(usernameDiv);
     newPostDiv.appendChild(postDiv);
     commentsDiv.appendChild(newPostDiv);
@@ -114,18 +187,3 @@ const createPostForm = () => {
 };
 
 createButton.addEventListener("click", createPostForm);
-
-    let newPostDiv = document.createElement("div"); 
-    let usernameDiv = document.createElement("h3"); 
-    let postDiv = document.createElement("p"); 
-    usernameDiv.innerHTML = formOne.querySelector(".username").value; 
-    postDiv.innerHTML = formOne.querySelector(".post").value; 
-    newPostDiv.appendChild(usernameDiv);
-    newPostDiv.appendChild(postDiv); 
-    commentsDiv.appendChild(newPostDiv); 
-    formOne.reset(); 
-  });
-};
-
-createButton.addEventListener("click", createPostForm);
-
