@@ -46,6 +46,7 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", (e) => {
     e.preventDefault();
+
     let newPostDiv = document.createElement("div");
     let usernameDiv = document.createElement("h3");
     let postDiv = document.createElement("p");
@@ -113,3 +114,18 @@ const createPostForm = () => {
 };
 
 createButton.addEventListener("click", createPostForm);
+
+    let newPostDiv = document.createElement("div"); 
+    let usernameDiv = document.createElement("h3"); 
+    let postDiv = document.createElement("p"); 
+    usernameDiv.innerHTML = formOne.querySelector(".username").value; 
+    postDiv.innerHTML = formOne.querySelector(".post").value; 
+    newPostDiv.appendChild(usernameDiv);
+    newPostDiv.appendChild(postDiv); 
+    commentsDiv.appendChild(newPostDiv); 
+    formOne.reset(); 
+  });
+};
+
+createButton.addEventListener("click", createPostForm);
+
