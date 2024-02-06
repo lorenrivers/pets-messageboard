@@ -1,16 +1,20 @@
+body {
+  font-family: "Poppins", sans-serif;
+}
+
 .username-text-input {
   padding: 10px;
   margin: 10px 0;
+  color: #190933;
 }
 
 .message-text-input {
-  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
 header {
-  background-color: #333;
+  background-color: #5dd9c1;
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -21,7 +25,7 @@ header h2 {
 }
 
 .create {
-  background-color: #802e64;
+  background-color: #190933;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -61,7 +65,7 @@ header h2 {
 
 .submit-button,
 .comment-section-submit-button {
-  background-color: #802e64;
+  background-color: #665687;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -75,6 +79,8 @@ header h2 {
 
 .comment-section {
   margin-top: 20px;
+  background-color: #665687;
+  color: #fff;
 }
 
 .comment-section-header {
