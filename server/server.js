@@ -77,6 +77,46 @@ app.delete("/messages/:postId", (req, res) => {
   }
 });
 
+app.post("/comments", (req, res) => {
+  try {
+    const username = req.body.username;
+    const comment = req.body.comment;
+    const imageURL = req.body.imageURL;
+
+    const newComment = db
+      .prepare(
+        `INSERT INTO comments (username, message, imageURL) VALUES (?, ?, ?)`
+      )
+      .run(username, comment, imageURL);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET request to show the user all the comments already within the message board and sends successful status code. Sends error if did not work. THIS .get ONLY WORKS FOR POSTS, NOT COMMENTS.
+app.get("/comments", (req, res) => {
+  try {
+    let comments = db.prepare(`SELECT * FROM comments`).all();
+    res.status(200).json(comments);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+app.delete("/comments/:postId", (req, res) => {
+  try {
+    const id = req.params.postId;
+
+    const result = db
+      .prepare(`DELETE FROM comments WHERE postId = '${id}'`)
+      .run();
+    res.status(200).json({ message: "message deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.listen("7700", () => {
   console.log("Ah yes, the server is listening");
 });
