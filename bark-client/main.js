@@ -75,8 +75,8 @@ const fetchMessages = async () => {
 
 const submitComment = async (form) => {
   try {
-    const username = form.querySelector(".username-post").value;
-    const postContent = form.querySelector(".post").value;
+    const username = form.querySelector(".username-comment").value;
+    const commentContent = form.querySelector(".comment").value;
     const response = await fetch("http://localhost:7700/comments", {
       method: "POST",
       headers: {
@@ -84,14 +84,14 @@ const submitComment = async (form) => {
       },
       body: JSON.stringify({
         username,
-        message: postContent,
+        comment: commentContent,
       }),
     });
 
     if (response.ok) {
-      const postData = await response.json();
+      const commentData = await response.json();
       fetchComments();
-      displayComments();
+      displayComments(commentData);
       form.reset();
     }
   } catch (error) {
@@ -181,9 +181,9 @@ const displayComments = async () => {
     
     results.replaceChildren();
 
-    messages.forEach((comment) => {
+    comments.forEach((comment) => {
       let commentDiv = document.createElement("div");
-      commentDiv.setAttribute("id", comment.postId);
+      commentDiv.setAttribute("id", comment.postIdRespondedTo);
       let h3Tag = document.createElement("h3");
       let pTag = document.createElement("p");
       let img = document.createElement("img");
@@ -208,7 +208,7 @@ const displayComments = async () => {
 
         try {
           const response = await fetch(
-            `http://localhost:7700/messages/${comment.postId}`,
+            `http://localhost:7700/comments/${comment.postId}`,
             {
               method: "DELETE",
               headers: {
@@ -275,13 +275,13 @@ const createCommentSectionFormElements = (parent) => {
 
   // Create username field
   let usernamePost = document.createElement("textarea");
-  usernamePost.setAttribute("class", "username-post");
+  usernamePost.setAttribute("class", "username-comment");
   usernamePost.setAttribute("placeholder", "Enter username");
   form.appendChild(usernamePost);
 
   // Create textarea
   let textarea = document.createElement("textarea");
-  textarea.setAttribute("class", "post");
+  textarea.setAttribute("class", "comment");
   textarea.setAttribute(
     "placeholder",
     "Got something to bark about? Share your woofs here!"
@@ -295,7 +295,7 @@ const createCommentSectionFormElements = (parent) => {
   form.appendChild(commentsSubmitButton);
 
   commentsSubmitButton.addEventListener("click", async (e) => {
-    // e.preventDefault();
+     e.preventDefault();
     displayComments();
     fetchComments();
     submitComment(form);
