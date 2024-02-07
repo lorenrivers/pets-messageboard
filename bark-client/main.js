@@ -2,6 +2,9 @@ const app = document.getElementById("app");
 const createButton = document.querySelector(".create");
 let results = document.getElementById("results");
 let submitButton;
+let commentsSubmitButton;
+let commentsDiv;
+
 
 
 // we may have to back down here and do this in html :'(
@@ -70,13 +73,13 @@ const fetchMessages = async () => {
   return result;
 };
 
-const messages = await fetchMessages();
-const lastMessage = messages[messages.length - 1];
 
 
 const displayMessages = async () => {
   try {
     let messages = await fetchMessages();
+    const lastMessage = messages[messages.length - 1];
+console.log(lastMessage)
     results.replaceChildren();
 
     messages.forEach((message) => {
@@ -98,12 +101,13 @@ const displayMessages = async () => {
       messageDiv.appendChild(pTag);
       messageDiv.appendChild(img);
       messageDiv.appendChild(delBut);
+    
       messageDiv.appendChild(commentBut);
 
       results.appendChild(messageDiv);
 
       commentBut.addEventListener("click", (e) => {
-        createCommentSection(lastMessage)
+        createCommentSectionFormElements(messageDiv)
       })
 
       delBut.addEventListener("click", async (e) => {
@@ -183,41 +187,33 @@ const submitComment = async (form, commentSectionList) => {
   form.reset();
 };
 
-const createCommentSection = (lastPostContainer) => {
-  let commentSection = document.createElement("section");
-  commentSection.setAttribute("class", "comment-section");
-  let commentSectionHeader = document.createElement("h2");
-  commentSectionHeader.textContent = "Comments";
-  let commentSectionList = document.createElement("ul");
-  commentSectionList.setAttribute("class", "comment-section-list");
-  let commentSectionForm = document.createElement("form");
-  commentSectionForm.setAttribute("class", "comment-section-form");
-  let commentSectionTextarea = document.createElement("textarea");
-  commentSectionTextarea.setAttribute("class", "textarea");
-  commentSectionTextarea.setAttribute("placeholder", "Add a comment...");
-  let commentSectionUsername = document.createElement("textarea");
-  commentSectionUsername.setAttribute("class", "username-comment");
-  commentSectionUsername.setAttribute("placeholder", "Your username");
-  let commentSectionSubmitButton = document.createElement("button");
-  commentSectionSubmitButton.setAttribute(
-    "class",
-    "comment-section-submit-button"
+const createCommentSectionFormElements = (parent) => {
+  let form = document.createElement("form");
+  form.setAttribute("class", "form");
+  parent.appendChild(form);
+
+  // Create username field
+  let usernamePost = document.createElement("textarea");
+  usernamePost.setAttribute("class", "username-post");
+  usernamePost.setAttribute("placeholder", "Enter username");
+  form.appendChild(usernamePost);
+
+  // Create textarea
+  let textarea = document.createElement("textarea");
+  textarea.setAttribute("class", "post");
+  textarea.setAttribute(
+    "placeholder",
+    "Got something to bark about? Share your woofs here!"
   );
-  commentSectionSubmitButton.textContent = "Submit";
+  form.appendChild(textarea);
 
-  commentSectionForm.appendChild(commentSectionTextarea);
-  commentSectionForm.appendChild(commentSectionUsername);
-  commentSectionForm.appendChild(commentSectionSubmitButton);
-  commentSection.appendChild(commentSectionHeader);
-  commentSection.appendChild(commentSectionList);
-  commentSection.appendChild(commentSectionForm);
+  // Create submit button
+  commentsSubmitButton = document.createElement("button");
+  commentsSubmitButton.setAttribute("class", "submit-button");
+  commentsSubmitButton.textContent = "Submit";
+  form.appendChild(commentsSubmitButton);
 
-  lastPostContainer.appendChild(commentSection);
-
-  commentSectionForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    await submitComment(commentSectionForm, commentSectionList);
-  });
+  return form;
 };
 
 createButton.addEventListener("click", createPostForm);
