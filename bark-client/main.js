@@ -358,4 +358,3 @@ createButton.addEventListener("click", createPostForm);
 //updated total variable is presented to the user on the webpage
 
 let voteCounter = 0;
-
