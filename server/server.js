@@ -17,9 +17,9 @@ app.post("/messages", (req, res) => {
 
     const newMessage = db
       .prepare(
-        `INSERT INTO posts (username, message, imageURL) VALUES (?, ?, ?)`
+        `INSERT INTO posts (username, message, voteCount, imageURL) VALUES (?, ?, ?, ?)`
       )
-      .run(username, message, imageURL);
+      .run(username, message, 0, imageURL);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -32,6 +32,88 @@ app.get("/messages", (req, res) => {
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+//POST request for sending number of votes to the server
+// app.post("/votes", (req, res) => {
+//   try {
+//     const voteCount = req.body.totalVoteCount;
+//     console.log(voteCount);
+
+//     const updateVoteTotal = db
+//       .prepare(`INSERT INTO posts (voteCount) VALUES (?)`)
+//       .run(voteCount);
+//     res.json(updateVoteTotal);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+//PUT request to update the number of votes within the database
+app.put("/votes/:postId", (req, res) => {
+  try {
+    const id = req.params.postId;
+    const voteCount = req.body.totalVoteCount;
+
+    const updatedVote = db
+      .prepare(`UPDATE posts SET voteCount = ? WHERE postId = ?`)
+      .run(voteCount, id);
+    res.status(200);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+app.delete("/messages/:postId", (req, res) => {
+  try {
+    const id = req.params.postId;
+
+    const result = db.prepare(`DELETE FROM posts WHERE postId = '${id}'`).run();
+    res.status(200).json({ message: "message deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/comments", (req, res) => {
+  try {
+    const username = req.body.username;
+    const comment = req.body.comment;
+    const imageURL = req.body.imageURL;
+
+    const newComment = db
+      .prepare(
+        `INSERT INTO comments (username, message, imageURL) VALUES (?, ?, ?)`
+      )
+      .run(username, comment, imageURL);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET request to show the user all the comments already within the message board and sends successful status code. Sends error if did not work. THIS .get ONLY WORKS FOR POSTS, NOT COMMENTS.
+app.get("/comments", (req, res) => {
+  try {
+    let comments = db.prepare(`SELECT * FROM comments`).all();
+    res.status(200).json(comments);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+app.delete("/comments/:postId", (req, res) => {
+  try {
+    const id = req.params.postId;
+
+    const result = db
+      .prepare(`DELETE FROM comments WHERE postId = '${id}'`)
+      .run();
+    res.status(200).json({ message: "message deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
