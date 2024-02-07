@@ -34,10 +34,38 @@ const createPostForm = () => {
     e.preventDefault();
     displayMessages()
     fetchMessages();
-    submitPost(formOne);
+    submitPost(formOne, createCommentSection(commentsDiv));
   });
   
 
+};
+
+const createPostFormElements = (parent) => {
+  let form = document.createElement("form");
+  form.setAttribute("class", "form");
+  parent.appendChild(form);
+
+  // Create username field 
+  let usernamePost = document.createElement("textarea");
+  usernamePost.setAttribute("class", "username-post");
+  usernamePost.setAttribute("placeholder", "Enter username");
+  form.appendChild(usernamePost);
+
+  // Create textarea
+  let textarea = document.createElement("textarea");
+  textarea.setAttribute("class", "post");
+  textarea.setAttribute("placeholder", "Got something to bark about? Share your woofs here!");
+  form.appendChild(textarea);
+
+  // Create submit button
+  submitButton = document.createElement("button");
+  submitButton.setAttribute("class", "submit-button");
+  submitButton.textContent = "Submit";
+  form.appendChild(submitButton);
+
+ 
+
+  return form;
 };
 
 const submitPost = async (form, commentsDiv) => {
@@ -55,12 +83,12 @@ const submitPost = async (form, commentsDiv) => {
         message: postContent,
       }),
     });
-
     if (response.ok) {
       const postData = await response.json();
       fetchMessages()
-      displayPost(postData);
-      form.reset();    }
+      displayMessages(postData, commentsDiv);
+      form.reset();    
+    }
 
     
   } catch (error) {
@@ -139,33 +167,7 @@ console.log(displayMessages());
 console.log(fetchMessages());
 displayMessages();
 
-const createPostFormElements = (parent) => {
-  let form = document.createElement("form");
-  form.setAttribute("class", "form");
-  parent.appendChild(form);
 
-  // Create username field 
-  let usernamePost = document.createElement("textarea");
-  usernamePost.setAttribute("class", "username-post");
-  usernamePost.setAttribute("placeholder", "Enter username");
-  form.appendChild(usernamePost);
-
-  // Create textarea
-  let textarea = document.createElement("textarea");
-  textarea.setAttribute("class", "post");
-  textarea.setAttribute("placeholder", "Got something to bark about? Share your woofs here!");
-  form.appendChild(textarea);
-
-  // Create submit button
-  submitButton = document.createElement("button");
-  submitButton.setAttribute("class", "submit-button");
-  submitButton.textContent = "Submit";
-  form.appendChild(submitButton);
-
- 
-
-  return form;
-};
 
 
 
