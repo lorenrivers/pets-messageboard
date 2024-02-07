@@ -109,7 +109,7 @@ const displayMessages = async () => {
           e.preventDefault();
 
           try {
-            const response = await fetch(`http://localhost:7700/messages/${message.id}`, {
+            const response = await fetch(`http://localhost:7700/messages/${message.postId}`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json'
@@ -117,7 +117,7 @@ const displayMessages = async () => {
             });
 
             if (response.ok) {
-              console.log('Message deleted:', message.id);
+              console.log('Message deleted:', message.postId);
               displayMessages();
             } else {
               console.error('Failed to delete message:', response.statusText);
