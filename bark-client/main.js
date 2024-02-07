@@ -73,6 +73,39 @@ const fetchMessages = async () => {
   return result;
 };
 
+const submitComment = async (form) => {
+  try {
+    const username = form.querySelector(".username-post").value;
+    const postContent = form.querySelector(".post").value;
+    const response = await fetch("http://localhost:7700/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        message: postContent,
+      }),
+    });
+
+    if (response.ok) {
+      const postData = await response.json();
+      fetchComments();
+      displayComments();
+      form.reset();
+    }
+  } catch (error) {
+    console.error("Error submitting post:", error.message);
+  }
+};
+
+const fetchComments = async () => {
+  const comments = await fetch("http://localhost:7700/comments");
+  let result = await comments.json();
+  return result;
+};
+
+
 
 
 const displayMessages = async () => {
@@ -84,7 +117,7 @@ console.log(lastMessage)
 
     messages.forEach((message) => {
       let messageDiv = document.createElement("div");
-      messageDiv.setAttribute("id", message.id);
+      messageDiv.setAttribute("id", message.postId);
       let h3Tag = document.createElement("h3");
       let pTag = document.createElement("p");
       let img = document.createElement("img");
@@ -142,6 +175,66 @@ console.log(lastMessage)
 
 };
 
+const displayComments = async () => {
+  try {
+    let comments = await fetchComments();
+    
+    results.replaceChildren();
+
+    messages.forEach((comment) => {
+      let commentDiv = document.createElement("div");
+      commentDiv.setAttribute("id", comment.postId);
+      let h3Tag = document.createElement("h3");
+      let pTag = document.createElement("p");
+      let img = document.createElement("img");
+      let delBut = document.createElement("button");
+
+      h3Tag.textContent = comment.comment;
+      pTag.textContent = comment.username;
+      img.src = message.imgURL;
+      delBut.textContent = "Delete";
+
+      commentDiv.appendChild(h3Tag);
+      commentDiv.appendChild(pTag);
+      commentDiv.appendChild(img);
+      commentDiv.appendChild(delBut);
+    
+
+      results.appendChild(commentDiv);
+
+
+      delBut.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        try {
+          const response = await fetch(
+            `http://localhost:7700/messages/${comment.postId}`,
+            {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (response.ok) {
+            console.log("Message deleted:", comment.postId);
+            displayComments();
+          } else {
+            console.error("Failed to delete message:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+  }
+  
+
+};
+
 console.log(displayMessages());
 console.log(fetchMessages());
 displayMessages();
@@ -175,18 +268,6 @@ const createPostFormElements = (parent) => {
   return form;
 };
 
-const submitComment = async (form, commentSectionList) => {
-  let newCommentDiv = document.createElement("div");
-  let commentUsername = document.createElement("h3");
-  let commentText = document.createElement("p");
-  commentUsername.innerHTML = form.querySelector(".username-comment").value;
-  commentText.innerHTML = form.querySelector(".textarea").value;
-  newCommentDiv.appendChild(commentUsername);
-  newCommentDiv.appendChild(commentText);
-  commentSectionList.appendChild(newCommentDiv);
-  form.reset();
-};
-
 const createCommentSectionFormElements = (parent) => {
   let form = document.createElement("form");
   form.setAttribute("class", "form");
@@ -212,6 +293,13 @@ const createCommentSectionFormElements = (parent) => {
   commentsSubmitButton.setAttribute("class", "submit-button");
   commentsSubmitButton.textContent = "Submit";
   form.appendChild(commentsSubmitButton);
+
+  commentsSubmitButton.addEventListener("click", async (e) => {
+    // e.preventDefault();
+    displayComments();
+    fetchComments();
+    submitComment(form);
+  });
 
   return form;
 };
