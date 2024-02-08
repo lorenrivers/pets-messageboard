@@ -143,7 +143,7 @@ const displayMessages = async () => {
       commentBut.textContent = "Comment";
       upvoteButton.textContent = "Upvote";
       downvoteButton.textContent = "Downvote";
-      pVoteCounter.textContent = message.voteCount;
+      pVoteCounter.textContent = message.voteCount + " votes!";
 
       messageDiv.appendChild(h3Tag);
       messageDiv.appendChild(pTag);
@@ -163,7 +163,7 @@ const displayMessages = async () => {
       //Upvote button event listener. Takes the count from the database and adds 1. Displays this to the user and puts the new count into the database.
       upvoteButton.addEventListener("click", async function () {
         voteCounter = message.voteCount += 1;
-        pVoteCounter.textContent = voteCounter;
+        pVoteCounter.textContent = voteCounter + " votes!";
         const response = await fetch(
           `http://localhost:7700/votes/${message.postId}`,
           {
@@ -179,7 +179,7 @@ const displayMessages = async () => {
       //Downvote button event listener. Takes the count from the database and takes away 1. Displays this to the user and puts the new count into the database.
       downvoteButton.addEventListener("click", async function () {
         voteCounter = message.voteCount -= 1;
-        pVoteCounter.textContent = voteCounter;
+        pVoteCounter.textContent = voteCounter + " votes!";
         const response = await fetch(
           `http://localhost:7700/votes/${message.postId}`,
           {

@@ -111,8 +111,7 @@ header h2 {
   display: flex;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1fr 1fr 0.5fr;
-  border: 1px dashed gray;
+  grid-template-rows: 50px 1fr 50px;
   border-radius: 4px;
   margin: 10px;
   padding: 10px 5px;
@@ -124,6 +123,10 @@ header h2 {
   background-color: whitesmoke;
   border-radius: 4px;
   padding: 10px;
+  margin: 0px;
+  width: fit-content;
+  height: fit-content;
+  border: 1px dashed gray;
 }
 
 .user-message {
@@ -131,6 +134,9 @@ header h2 {
   background-color: whitesmoke;
   border-radius: 4px;
   padding: 10px;
+  margin: 0px;
+  width: fit-content;
+  height: fit-content;
 }
 
 .upvote-button {
@@ -147,6 +153,10 @@ header h2 {
   cursor: pointer;
 }
 
+.upvote-button:hover {
+  opacity: 0.5;
+}
+
 .downvote-button {
   grid-area: 2 / 2 / 3 / 3;
   margin-left: 80px;
@@ -161,17 +171,21 @@ header h2 {
   cursor: pointer;
 }
 
+.downvote-button:hover {
+  opacity: 0.5;
+}
+
 .display-vote-count {
-  grid-area: 1 / 2 / 2 / 3;
-  text-align: center;
-  align-self: flex-end;
-  margin-left: 80px;
+  grid-area: 1 / 1 / 2 / 2;
+  text-align: end;
+  font-weight: bold;
 }
 
 .comment-button {
   grid-area: 3 / 1 / 4 / 2;
   margin-left: 100px;
   margin-right: 10px;
+  margin-top: 15px;
   align-self: flex-start;
   background-color: #190933;
   border-radius: 4px;
@@ -182,9 +196,14 @@ header h2 {
   cursor: pointer;
 }
 
+.comment-button:hover {
+  opacity: 0.5;
+}
+
 .delete-button {
   grid-area: 3 / 2 / 4 / 3;
   margin-right: 100px;
+  margin-top: 15px;
   align-self: flex-start;
   background-color: #190933;
   border-radius: 4px;
@@ -193,6 +212,10 @@ header h2 {
   padding: 10px 20px;
   text-decoration: none;
   cursor: pointer;
+}
+
+.delete-button:hover {
+  opacity: 0.5;
 }
 
 /* End here */
