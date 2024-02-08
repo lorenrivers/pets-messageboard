@@ -4,9 +4,14 @@ let results = document.getElementById("results");
 let submitButton;
 let commentsSubmitButton;
 let commentsDiv;
+let postArray = [];
 
 // we may have to back down here and do this in html :'(
 const createPostForm = () => {
+
+  if (document.querySelector('.container')) {
+    return
+  };
   // Create container div
   let containerDiv = document.createElement("div");
   containerDiv.setAttribute("class", "container");
@@ -33,7 +38,7 @@ const createPostForm = () => {
 
   submitButton.addEventListener("click", async (e) => {
     // e.preventDefault();
-    displayMessages();
+    displayStuff();
     fetchMessages();
     submitPost(formOne);
   });
@@ -57,7 +62,7 @@ const submitPost = async (form, commentsDiv) => {
     if (response.ok) {
       const postData = await response.json();
       fetchMessages();
-      displayPost(postData);
+      
       form.reset();
     }
   } catch (error) {
@@ -90,7 +95,7 @@ const submitComment = async (form, postId) => {
     if (response.ok) {
       const commentData = await response.json();
       fetchComments();
-      displayComments(commentData);
+      displayStuff();
       form.reset();
     }
   } catch (error) {
@@ -115,6 +120,11 @@ const displayMessages = async () => {
     messages.forEach((message) => {
       console.log(message)
       let messageDiv = document.createElement("div");
+      postArray.push({
+        id: message.postId,
+        div: messageDiv
+
+      })
       messageDiv.setAttribute("id", message.postId);
       //loren2 addition
       messageDiv.classList.add("message-div");
@@ -212,7 +222,7 @@ const displayMessages = async () => {
 
           if (response.ok) {
             console.log("Message deleted:", message.postId);
-            displayMessages();
+            displayStuff();
           } else {
             console.error("Failed to delete message:", response.statusText);
           }
@@ -230,17 +240,17 @@ const displayComments = async (linkedId) => {
   try {
     let comments = await fetchComments();
 
-
     comments.forEach((comment) => {
+      let finalDiv = document.getElementById(comment.postIdRespondedTo);
+
       let commentDiv = document.createElement("div");
-      commentDiv.setAttribute("id", comment.postIdRespondedTo);
       let h3Tag = document.createElement("h3");
       let pTag = document.createElement("p");
       // let img = document.createElement("img");
       let delBut = document.createElement("button");
 
-      h3Tag.textContent = comment.comment;
-      pTag.textContent = comment.username;
+      pTag.textContent = comment.comment;
+      h3Tag.textContent = comment.usernameComment;
       // img.src = message.imgURL;
       delBut.textContent = "Delete";
 
@@ -249,14 +259,14 @@ const displayComments = async (linkedId) => {
       // commentDiv.appendChild(img);
       commentDiv.appendChild(delBut);
 
-      results.appendChild(commentDiv);
+      finalDiv.appendChild(commentDiv);
 
       delBut.addEventListener("click", async (e) => {
         e.preventDefault();
 
         try {
           const response = await fetch(
-            `http://localhost:7700/comments/${comment.postId}`,
+            `http://localhost:7700/comments/${comment.postIdRespondedTo}`,
             {
               method: "DELETE",
               headers: {
@@ -267,7 +277,7 @@ const displayComments = async (linkedId) => {
 
           if (response.ok) {
             console.log("Message deleted:", comment.postId);
-            displayComments();
+            displayStuff();
           } else {
             console.error("Failed to delete message:", response.statusText);
           }
@@ -283,7 +293,13 @@ const displayComments = async (linkedId) => {
 
 console.log(displayMessages());
 console.log(fetchMessages());
-displayMessages();
+const displayStuff = async () => {
+  results.replaceChildren();
+  await displayMessages();
+  displayComments();
+};
+displayStuff()
+
 
 const createPostFormElements = (parent) => {
   let form = document.createElement("form");
@@ -316,6 +332,9 @@ const createPostFormElements = (parent) => {
 
 const createCommentSectionFormElements = async (parent, linkedId) => {
   // linked8
+  if (document.querySelector('.username-comment')) {
+    return
+  };
   const response = await fetchMessages();
   console.log(response)
   let form = document.createElement("form");
@@ -345,7 +364,7 @@ const createCommentSectionFormElements = async (parent, linkedId) => {
 
   commentsSubmitButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    displayComments();
+    displayStuff();
     fetchComments();
     // pass again the post id
     submitComment(form, linkedId);
