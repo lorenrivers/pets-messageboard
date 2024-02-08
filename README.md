@@ -28,11 +28,9 @@ Woud need:
 VS Code 
 
 
-
-Lighthouse report (optional):
-Screenshot of the Lighthouse report
-
 References:
 Colour palette: https://github.com/lorenrivers/pets-messageboard/assets/143703905/67ff4f71-fa22-4048-8555-32a5c87ea293
 
-
+Project planning:
+https://miro.com/app/board/uXjVNxg1i3s=/
+https://trello.com/b/cyXSUx1k/bark
