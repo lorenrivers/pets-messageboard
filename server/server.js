@@ -95,7 +95,7 @@ app.delete("/comments/:postId", (req, res) => {
     const id = req.params.postId;
 
     const result = db
-      .prepare(`DELETE FROM comments WHERE postId = '${id}'`)
+      .prepare(`DELETE FROM comments WHERE postIdRespondedTo = '${id}'`)
       .run();
     res.status(200).json({ message: "message deleted successfully" });
   } catch (err) {
