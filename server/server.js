@@ -61,17 +61,20 @@ app.delete("/messages/:postId", (req, res) => {
   }
 });
 
-app.post("/comments", (req, res) => {
+app.post("/comments/:postId", (req, res) => {
+  console.log(req.body, req.params)
   try {
     const username = req.body.username;
     const comment = req.body.comment;
-    const imageURL = req.body.imageURL;
+    // const imageURL = req.body.imageURL;
+    const postIdRespondedTo = parseInt(req.params.postId);
+    console.log(postIdRespondedTo)
     // you need to insert the ID that the comment happened on.
     const newComment = db
       .prepare(
-        `INSERT INTO comments (username, message, imageURL) VALUES (?, ?, ?)`
-      )
-      .run(username, comment, imageURL);
+        `INSERT INTO comments (usernameComment, comment, postIdRespondedTo) VALUES (?,?,?)`
+      ).run(username, comment, postIdRespondedTo);
+      res.status(201).json(newComment);
   } catch (err) {
     res.status(500).json(err);
   }
