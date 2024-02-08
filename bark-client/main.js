@@ -257,7 +257,7 @@ const displayComments = async (linkedId) => {
       commentDiv.appendChild(h3Tag);
       commentDiv.appendChild(pTag);
       // commentDiv.appendChild(img);
-      commentDiv.appendChild(delBut);
+      // commentDiv.appendChild(delBut);
 
       finalDiv.appendChild(commentDiv);
 
