@@ -13,11 +13,20 @@ body {
   padding: 0;
 }
 
+img {
+  height: 250px;
+  width: 300px;
+}
+
 header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   background-color: #5dd9c1;
   color: #fff;
-  padding: 20px;
+  padding: 0%;
   text-align: center;
+  margin: 0;
 }
 
 header h2 {
@@ -25,6 +34,7 @@ header h2 {
 }
 
 .create {
+  height: fit-content;
   background-color: #190933;
   border: none;
   color: white;
@@ -35,8 +45,12 @@ header h2 {
   font-size: 16px;
   margin: 10px;
   cursor: pointer;
+  border-radius: 4px;
 }
 
+.create:hover {
+  opacity: 0.5;
+}
 .container {
   margin: 20px;
   padding: 20px;
