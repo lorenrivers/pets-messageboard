@@ -12,7 +12,7 @@ db.exec(`CREATE TABLE IF NOT EXISTS posts (
 
 //postIdRespondedTo would match to the postId the comment relates to.
 db.exec(`CREATE TABLE IF NOT EXISTS comments (
-    postIdRespondedTo INTEGER, 
+    postIdRespondedTo INTEGER NOT NULL REFERENCES posts,
     usernameComment TEXT,
     comment TEXT,
     commentVoteCount INTEGER,
@@ -22,11 +22,11 @@ db.exec(`CREATE TABLE IF NOT EXISTS comments (
 //Test data for tables
 db.exec(`INSERT INTO posts (username, message, voteCount)
 VALUES
-('HoochTheDog', 'Anyone got any tennis balls? 🎾', 0)`);
+('HoochTheDog', 'Anyone got any tennis balls? 🎾', 0), ('Loren', 'ashvcjsvjsd', 0)`);
 
-db.exec(`INSERT INTO comments (usernameComment, comment)
+db.exec(`INSERT INTO comments (postIdRespondedTo, usernameComment, comment)
 VALUES
-('Blu', 'Nope I ate them all!!')`);
+(1, 'Blu', 'Nope I ate them all!!')`);
 
 //SQL query to join two tables together?
 db.exec(`SELECT posts.postId, posts.username, posts.message, posts.voteCount, comments.postIdRespondedTo, comments.usernameComment, comments.comment, comments.commentVoteCount, comments.commentImageURL

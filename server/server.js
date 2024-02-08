@@ -66,7 +66,7 @@ app.post("/comments", (req, res) => {
     const username = req.body.username;
     const comment = req.body.comment;
     const imageURL = req.body.imageURL;
-
+    // you need to insert the ID that the comment happened on.
     const newComment = db
       .prepare(
         `INSERT INTO comments (username, message, imageURL) VALUES (?, ?, ?)`
@@ -99,6 +99,21 @@ app.delete("/comments/:postId", (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
+});
+
+app.get("/posts", (req, res) => {
+  const postsAndComments = db
+    .prepare(
+      `
+  SELECT
+    posts.postId, posts.username, posts.message, posts.voteCount, comments.postIdRespondedTo, comments.usernameComment, comments.comment, comments.commentVoteCount, comments.commentImageURL
+   FROM
+    posts
+   LEFT JOIN comments ON posts.postId = comments.postIdRespondedTo
+  `
+    )
+    .all();
+  res.json(postsAndComments);
 });
 
 app.listen("7700", () => {
