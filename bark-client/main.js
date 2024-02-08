@@ -156,6 +156,7 @@ const displayMessages = async () => {
       results.appendChild(messageDiv);
 
       commentBut.addEventListener("click", (e) => {
+        // pass postId
         createCommentSectionFormElements(messageDiv);
       });
 
@@ -340,6 +341,7 @@ const createCommentSectionFormElements = (parent) => {
     e.preventDefault();
     displayComments();
     fetchComments();
+    // pass again the post id
     submitComment(form);
   });
 
