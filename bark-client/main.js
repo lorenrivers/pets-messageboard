@@ -43,6 +43,10 @@ const submitPost = async (form, commentsDiv) => {
   try {
     const username = form.querySelector(".username-post").value;
     const postContent = form.querySelector(".post").value;
+    const imageFile = form.querySelector('input[type="file"]').files[0];
+
+    
+
     const response = await fetch("http://localhost:7700/messages", {
       method: "POST",
       headers: {
@@ -64,6 +68,39 @@ const submitPost = async (form, commentsDiv) => {
     console.error("Error submitting post:", error.message);
   }
 };
+// giving up on image upload. hopefully whoever marks this can help me understand how to use multer lol
+// const submitPost = async (form, commentsDiv) => {
+//   try {
+//     const username = form.querySelector(".username-post").value;
+//     const postContent = form.querySelector(".post").value;
+//     const imageFile = form.querySelector('input[type="file"]').files[0];
+
+//     const formData = new FormData(form);
+//     console.log([...formData]);
+//     formData.append('username', username);
+//     formData.append('post', postContent);
+//     formData.append('image', imageFile);
+
+//     const response = await fetch("http://localhost:7700/messages", {
+//       method: "POST",
+//       body: formData,
+//     });
+
+//     const uploadResult = await fetch ("http://localhost:7700/upload", {
+//       method: "POST",
+//       body: formData,
+//     })
+
+//     if (response.ok && uploadResult.ok) {
+//       const postData = await response.json();
+//       fetchMessages();
+//       displayPost(postData);
+//       form.reset();
+//     }
+//   } catch (error) {
+//     console.error("Error submitting post:", error.message);
+//   }
+// };
 
 const fetchMessages = async () => {
   const messages = await fetch("http://localhost:7700/messages");
@@ -126,7 +163,7 @@ const displayMessages = async () => {
 
       h3Tag.textContent = message.message;
       pTag.textContent = message.username;
-      img.src = message.imgURL;
+      img.src = message.imageURL;
       delBut.textContent = "Delete";
       commentBut.textContent = "Comment";
       //loren addition
@@ -228,7 +265,7 @@ const displayComments = async () => {
 
       h3Tag.textContent = comment.comment;
       pTag.textContent = comment.username;
-      img.src = message.imgURL;
+      img.src = message.imageURL;
       delBut.textContent = "Delete";
 
       commentDiv.appendChild(h3Tag);
@@ -281,16 +318,26 @@ const createPostFormElements = (parent) => {
   let usernamePost = document.createElement("textarea");
   usernamePost.setAttribute("class", "username-post");
   usernamePost.setAttribute("placeholder", "Enter username");
+  usernamePost.setAttribute("name", "username");
+
   form.appendChild(usernamePost);
 
   // Create textarea
   let textarea = document.createElement("textarea");
   textarea.setAttribute("class", "post");
+  textarea.setAttribute("name", "post");
+
   textarea.setAttribute(
     "placeholder",
     "Got something to bark about? Share your woofs here!"
   );
   form.appendChild(textarea);
+
+  // // Create file input
+  // let fileInput = document.createElement("input");
+  // fileInput.setAttribute("type", "file");
+  // fileInput.setAttribute("name", "image");
+  // form.appendChild(fileInput);
 
   // Create submit button
   submitButton = document.createElement("button");

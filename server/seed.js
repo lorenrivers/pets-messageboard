@@ -30,6 +30,6 @@ VALUES
 ('Blu', 'Nope I ate them all!!')`);
 
 //SQL query to join two tables together?
-db.exec(`SELECT posts.postId, posts.username, posts.message, posts.voteCount, posts.imageURL, comments.postIdRespondedTo, comments.usernameComment, comments.comment, comments.commentVoteCount, comments.commentImageURL
+db.exec(`SELECT posts.postId, posts.username, posts.message, posts.voteCount, posts.imageURL, comments.usernameComment, comments.comment, comments.commentVoteCount, comments.commentImageURL
 FROM posts
 INNER JOIN comments ON posts.postId = comments.postIdRespondedTo`);

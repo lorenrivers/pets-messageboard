@@ -1,7 +1,13 @@
 import express from "express";
 import cors from "cors";
 import Database from "better-sqlite3";
+// import multer from "multer";
+// import path from "path";
+// import fs from 'fs';
 
+
+
+// const upload = multer({ dest: 'uploads/' })
 const app = express();
 const db = new Database("database.db");
 
@@ -13,13 +19,37 @@ app.post("/messages", (req, res) => {
   try {
     const username = req.body.username;
     const message = req.body.message;
-    const imageURL = req.body.imageURL;
+    // const imageFile = req.file; 
+
+   
 
     const newMessage = db
       .prepare(
         `INSERT INTO posts (username, message, voteCount, imageURL) VALUES (?, ?, ?, ?)`
       )
-      .run(username, message, 0, imageURL);
+      .run(username, message, 0, imageFile);
+
+    res.status(201).json(newMessage); 
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+app.post("/comments", upload.single('image'), (req, res) => {
+  try {
+    const username = req.body.username;
+    const message = req.body.message;
+    // const imageFile = req.file; 
+
+   
+
+    const newMessage = db
+      .prepare(
+        `INSERT INTO comments (usernameComment, comment, commentVoteCount, commentImageURL) VALUES (?, ?, ?, ?)`
+      )
+      .run(username, message, 0, imageFile);
+
+    res.status(201).json(newMessage); 
   } catch (err) {
     res.status(500).json(err);
   }
@@ -29,6 +59,15 @@ app.post("/messages", (req, res) => {
 app.get("/messages", (req, res) => {
   try {
     let posts = db.prepare(`SELECT * FROM posts`).all();
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+app.get("/comments", (req, res) => {
+  try {
+    let posts = db.prepare(`SELECT * FROM comments`).all();
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -77,6 +116,7 @@ app.delete("/messages/:postId", (req, res) => {
   }
 });
 
+
 app.post("/comments", (req, res) => {
   try {
     const username = req.body.username;
@@ -116,6 +156,20 @@ app.delete("/comments/:postId", (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// app.post("/upload", upload.any(), (req, res) => {
+//   try {
+//     const image = req.file;
+//     const imagePath = path.join(__dirname, image.path); 
+
+//     db.prepare(`UPDATE posts SET imageURL = ? WHERE postId = ?`).run(imagePath, postId);
+
+//     res.status(200).json({ imagePath });
+//   } catch (err) {
+//     res.status(500).json({ error: "Failed to upload file" });
+//   }
+// });
+
 
 app.listen("7700", () => {
   console.log("Ah yes, the server is listening");
