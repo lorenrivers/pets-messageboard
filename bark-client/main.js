@@ -113,33 +113,42 @@ const displayMessages = async () => {
     messages.forEach((message) => {
       let messageDiv = document.createElement("div");
       messageDiv.setAttribute("id", message.postId);
+      //loren2 addition
+      messageDiv.classList.add("message-div");
       let h3Tag = document.createElement("h3");
+      //loren2 addition
+      h3Tag.classList.add("user-message");
       let pTag = document.createElement("p");
-      let img = document.createElement("img");
+      //loren2 addition
+      pTag.classList.add("username-text");
       let delBut = document.createElement("button");
+      //loren2 addition
+      delBut.classList.add("delete-button");
       let commentBut = document.createElement("button");
-      //loren addition
-
+      //loren2 addition
+      commentBut.classList.add("comment-button");
       let upvoteButton = document.createElement("button");
+      //loren2 addition
+      upvoteButton.classList.add("upvote-button");
       let downvoteButton = document.createElement("button");
+      //loren2 addition
+      downvoteButton.classList.add("downvote-button");
       let pVoteCounter = document.createElement("p");
+      //loren2 addition
+      pVoteCounter.classList.add("display-vote-count");
 
       h3Tag.textContent = message.message;
       pTag.textContent = message.username;
-      img.src = message.imgURL;
       delBut.textContent = "Delete";
       commentBut.textContent = "Comment";
-      //loren addition
       upvoteButton.textContent = "Upvote";
       downvoteButton.textContent = "Downvote";
       pVoteCounter.textContent = message.voteCount;
 
       messageDiv.appendChild(h3Tag);
       messageDiv.appendChild(pTag);
-      messageDiv.appendChild(img);
       messageDiv.appendChild(delBut);
       messageDiv.appendChild(commentBut);
-      //loren addition
       messageDiv.appendChild(upvoteButton);
       messageDiv.appendChild(downvoteButton);
       messageDiv.appendChild(pVoteCounter);
@@ -150,7 +159,7 @@ const displayMessages = async () => {
         createCommentSectionFormElements(messageDiv);
       });
 
-      //loren addition
+      //Upvote button event listener. Takes the count from the database and adds 1. Displays this to the user and puts the new count into the database.
       upvoteButton.addEventListener("click", async function () {
         voteCounter = message.voteCount += 1;
         pVoteCounter.textContent = voteCounter;
@@ -166,7 +175,7 @@ const displayMessages = async () => {
         );
       });
 
-      //loren addition
+      //Downvote button event listener. Takes the count from the database and takes away 1. Displays this to the user and puts the new count into the database.
       downvoteButton.addEventListener("click", async function () {
         voteCounter = message.voteCount -= 1;
         pVoteCounter.textContent = voteCounter;
@@ -338,11 +347,5 @@ const createCommentSectionFormElements = (parent) => {
 };
 
 createButton.addEventListener("click", createPostForm);
-
-//have a variable to store the total votes which is displayed to the user (DOM)
-// FUNCTION
-//total increments by one when the upvote button is clicked
-//total is updated in the database and is saved under the post ID that was clicked
-//updated total variable is presented to the user on the webpage
 
 let voteCounter = 0;

@@ -13,13 +13,12 @@ app.post("/messages", (req, res) => {
   try {
     const username = req.body.username;
     const message = req.body.message;
-    const imageURL = req.body.imageURL;
 
     const newMessage = db
       .prepare(
-        `INSERT INTO posts (username, message, voteCount, imageURL) VALUES (?, ?, ?, ?)`
+        `INSERT INTO posts (username, message, voteCount) VALUES (?, ?, ?)`
       )
-      .run(username, message, 0, imageURL);
+      .run(username, message, 0);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -34,21 +33,6 @@ app.get("/messages", (req, res) => {
     res.status(500).json(err);
   }
 });
-
-//POST request for sending number of votes to the server
-// app.post("/votes", (req, res) => {
-//   try {
-//     const voteCount = req.body.totalVoteCount;
-//     console.log(voteCount);
-
-//     const updateVoteTotal = db
-//       .prepare(`INSERT INTO posts (voteCount) VALUES (?)`)
-//       .run(voteCount);
-//     res.json(updateVoteTotal);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
 
 //PUT request to update the number of votes within the database
 app.put("/votes/:postId", (req, res) => {
