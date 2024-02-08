@@ -35,7 +35,7 @@ const createPostForm = () => {
     // e.preventDefault();
     displayMessages();
     fetchMessages();
-    submitPost(formOne, createCommentSection(commentsDiv));
+    submitPost(formOne);
   });
 };
 
@@ -71,17 +71,18 @@ const fetchMessages = async () => {
   return result;
 };
 
-const submitComment = async (form) => {
+const submitComment = async (form, postId) => {
   try {
     const username = form.querySelector(".username-comment").value;
     const commentContent = form.querySelector(".comment").value;
-    const response = await fetch("http://localhost:7700/comments", {
+    const response = await fetch(`http://localhost:7700/comments/${postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username,
+        id: postId,
+        username: username,
         comment: commentContent,
       }),
     });
@@ -93,9 +94,10 @@ const submitComment = async (form) => {
       form.reset();
     }
   } catch (error) {
-    console.error("Error submitting post:", error.message);
+    console.error("Error submitting comment:", error.message);
   }
 };
+
 
 const fetchComments = async () => {
   const comments = await fetch("http://localhost:7700/comments");
@@ -111,6 +113,7 @@ const displayMessages = async () => {
     results.replaceChildren();
 
     messages.forEach((message) => {
+      console.log(message)
       let messageDiv = document.createElement("div");
       messageDiv.setAttribute("id", message.postId);
       //loren2 addition
@@ -157,7 +160,8 @@ const displayMessages = async () => {
 
       commentBut.addEventListener("click", (e) => {
         // pass postId
-        createCommentSectionFormElements(messageDiv);
+        // postId 8
+        createCommentSectionFormElements(messageDiv, message.postId);
       });
 
       //Upvote button event listener. Takes the count from the database and adds 1. Displays this to the user and puts the new count into the database.
@@ -222,28 +226,27 @@ const displayMessages = async () => {
   }
 };
 
-const displayComments = async () => {
+const displayComments = async (linkedId) => {
   try {
     let comments = await fetchComments();
 
-    results.replaceChildren();
 
     comments.forEach((comment) => {
       let commentDiv = document.createElement("div");
       commentDiv.setAttribute("id", comment.postIdRespondedTo);
       let h3Tag = document.createElement("h3");
       let pTag = document.createElement("p");
-      let img = document.createElement("img");
+      // let img = document.createElement("img");
       let delBut = document.createElement("button");
 
       h3Tag.textContent = comment.comment;
       pTag.textContent = comment.username;
-      img.src = message.imgURL;
+      // img.src = message.imgURL;
       delBut.textContent = "Delete";
 
       commentDiv.appendChild(h3Tag);
       commentDiv.appendChild(pTag);
-      commentDiv.appendChild(img);
+      // commentDiv.appendChild(img);
       commentDiv.appendChild(delBut);
 
       results.appendChild(commentDiv);
@@ -311,7 +314,10 @@ const createPostFormElements = (parent) => {
   return form;
 };
 
-const createCommentSectionFormElements = (parent) => {
+const createCommentSectionFormElements = async (parent, linkedId) => {
+  // linked8
+  const response = await fetchMessages();
+  console.log(response)
   let form = document.createElement("form");
   form.setAttribute("class", "form");
   parent.appendChild(form);
@@ -342,7 +348,7 @@ const createCommentSectionFormElements = (parent) => {
     displayComments();
     fetchComments();
     // pass again the post id
-    submitComment(form);
+    submitComment(form, linkedId);
   });
 
   return form;
