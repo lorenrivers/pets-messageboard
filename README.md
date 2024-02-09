@@ -23,9 +23,12 @@ As a user, I want to be able to click a button to either add an upvote/ downvote
 
 
 Instructions that the user may need to follow in order to get your application up and running on their own computer:
-How to download any packages or libraries to install (npm, ...)
-Woud need:
+How to download any packages or libraries to install.
+
+In order to Woud need:
 VS Code 
+Download Express, Cors, Better-sqlite3: npm i express, cors, better-sqlite3
+In client folder need ot run npm i to run Vite. 
 
 
 References:
