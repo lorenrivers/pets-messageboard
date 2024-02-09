@@ -1,40 +1,33 @@
 body {
   font-family: "Poppins", sans-serif;
-}
-
-.username-text-input {
-  padding: 10px;
-  margin: 10px 0;
-  color: #190933;
-}
-
-.message-text-input {
-  margin: 0;
-  padding: 0;
-}
-
-img {
-  height: 250px;
-  width: 300px;
+ 
 }
 
 header {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   background-color: #5dd9c1;
   color: #fff;
-  padding: 0%;
+  padding: 10px 0;
   text-align: center;
-  margin: 0;
+}
+
+header img {
+  max-height: 12rem;
 }
 
 header h2 {
   margin: 0;
 }
 
-.create {
-  height: fit-content;
+.create,
+.submit-button,
+.comment-section-submit-button,
+.upvote-button,
+.downvote-button,
+.comment-button,
+.delete-button {
   background-color: #190933;
   border: none;
   color: white;
@@ -48,21 +41,20 @@ header h2 {
   border-radius: 4px;
 }
 
-.create:hover {
+.create:hover,
+.submit-button:hover,
+.comment-section-submit-button:hover,
+.upvote-button:hover,
+.downvote-button:hover,
+.comment-button:hover,
+.delete-button:hover {
   opacity: 0.5;
 }
+
 .container {
-  margin: 20px;
+  margin: 10px;
   padding: 20px;
   border: 1px solid #ccc;
-}
-
-.submit-message {
-  margin-bottom: 20px;
-}
-
-.comments {
-  margin-top: 20px;
 }
 
 .form {
@@ -75,20 +67,6 @@ header h2 {
   padding: 10px;
   box-sizing: border-box;
   margin-bottom: 10px;
-}
-
-.submit-button,
-.comment-section-submit-button {
-  background-color: #665687;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 0;
-  cursor: pointer;
 }
 
 .comment-section {
@@ -120,116 +98,41 @@ header h2 {
   margin-top: 20px;
 }
 
-/* loren additions start here */
 .message-div {
-  display: flex;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 50px 1fr 50px;
-  border-radius: 4px;
-  margin: 10px;
-  padding: 10px 5px;
   background-color: #5dd9c180;
+  border-radius: 1rem;
+  padding-left: 1rem;
+
 }
 
-.username-text {
-  grid-area: 1 / 1 / 2 / 2;
-  background-color: whitesmoke;
-  border-radius: 4px;
-  padding: 10px;
-  margin: 0px;
-  width: fit-content;
-  height: fit-content;
-  border: 1px dashed gray;
-}
+@media (max-width: 768px) {
+  .message-div {
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #5dd9c180;
+  }
 
-.user-message {
-  grid-area: 2 / 1 / 3 / 2;
-  background-color: whitesmoke;
-  border-radius: 4px;
-  padding: 10px;
-  margin: 0px;
-  width: fit-content;
-  height: fit-content;
-}
+  .username-text,
+  .user-message,
+  .upvote-button,
+  .downvote-button,
+  .comment-button,
+  .delete-button {
+    width: 100%;
+    margin: 5px 0;
+  }
 
-.upvote-button {
-  grid-area: 1 / 2 / 2 / 3;
-  margin-left: 80px;
-  margin-right: 5px;
-  align-self: flex-start;
-  background-color: #190933;
-  border-radius: 4px;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  cursor: pointer;
-}
+  .upvote-button,
+  .downvote-button,
+  .comment-button,
+  .delete-button {
+    margin-top: 10px;
+  }
 
-.upvote-button:hover {
-  opacity: 0.5;
+  header {
+    flex-direction: column;
+  }
 }
-
-.downvote-button {
-  grid-area: 2 / 2 / 3 / 3;
-  margin-left: 80px;
-  margin-right: 5px;
-  align-self: flex-start;
-  background-color: #190933;
-  border-radius: 4px;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.downvote-button:hover {
-  opacity: 0.5;
-}
-
-.display-vote-count {
-  grid-area: 1 / 1 / 2 / 2;
-  text-align: end;
-  font-weight: bold;
-}
-
-.comment-button {
-  grid-area: 3 / 1 / 4 / 2;
-  margin-left: 100px;
-  margin-right: 10px;
-  margin-top: 15px;
-  align-self: flex-start;
-  background-color: #190933;
-  border-radius: 4px;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.comment-button:hover {
-  opacity: 0.5;
-}
-
-.delete-button {
-  grid-area: 3 / 2 / 4 / 3;
-  margin-right: 100px;
-  margin-top: 15px;
-  align-self: flex-start;
-  background-color: #190933;
-  border-radius: 4px;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.delete-button:hover {
-  opacity: 0.5;
-}
-
-/* End here */
