@@ -160,7 +160,7 @@ const displayMessages = async () => {
 
       messageDiv.appendChild(h3Tag);
       messageDiv.appendChild(pTag);
-      messageDiv.appendChild(delBut);
+      // messageDiv.appendChild(delBut);
       messageDiv.appendChild(commentBut);
       messageDiv.appendChild(upvoteButton);
       messageDiv.appendChild(downvoteButton);
